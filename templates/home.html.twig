@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Welcome to Symfony!</title>
+    </head>
+    <body>
+        <h1>{{ page_title }}</h1>
+
+        {#{% if user.isLoggedIn %}
+            Hello {{ user.name }}!
+        {% endif %}#}
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="...">Delete</a>
+            {% else %}
+            <li><a href="{{ path('user_page') }}"> Identify your self ? </a></li>
+        {% endif %}
+        {# ... #}
+    </body>
+</html>
