@@ -4,8 +4,13 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
-    </head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     </head>
     <body>
+        {% if is_granted('ROLE_ADMIN') %}
+        {% elseif is_granted('ROLE_USER')%}
+            <li><a href="{{ path('logout_url') }}"> Wanna Loggout ? </a></li>
+        {% endif %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
