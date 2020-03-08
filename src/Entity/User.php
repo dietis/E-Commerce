@@ -53,6 +53,11 @@ class User implements UserInterface
      */
     private $roles;
 
+    /**
+     * @ORM\Column(type="string", unique=true, nullable=true)
+    */
+    private $apiToken;
+
     public function __construct()
     {
         $this->roles = array('ROLE_USER');
@@ -110,6 +115,11 @@ class User implements UserInterface
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    public function setRoles($role)
+    {
+        $this->roles = $role;
     }
 
     public function eraseCredentials()
