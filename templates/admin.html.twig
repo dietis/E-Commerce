@@ -7,7 +7,7 @@
         {% if is_granted('ROLE_ADMIN') %}
             <h3>Hello Admin !</h3>
             {% else %}
-            <li><a href="{{ path('/') }}"> No right to be there ! </a></li>
+            <li><a href="{{ path('home_page') }}"> No right to be there ! </a></li>
         {% endif %}
         {# ... #}
 {% endblock %}

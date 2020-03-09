@@ -15,7 +15,7 @@ class Admin_page extends AbstractController
     }
 
     /**
-    * @Route("/", name="admin_page")
+    * @Route("/admin", name="admin_page")
     */
     public function index() {
         // ...
