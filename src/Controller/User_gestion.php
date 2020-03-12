@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -28,6 +29,40 @@ class User_gestion extends AbstractController
             'user.html.twig',
             array()
         );
+    }
+
+    /**
+     * @Route("/User/profile/settings", name="user_settings_page")
+     */
+    public function settings(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+        $usermail = $user->getEmail();
+
+        return $this->render(
+            'user_setting.html.twig',
+            array('user' => $user)
+        );
+    }
+     /**
+     * @Route("/User/profile/settings/save", name="user_settings_ajax")
+     */
+    public function settings_validate(Request $request) {
+        if ($request->isXMLHttpRequest()) {         
+            //$json = json_encode(array('data' => $_POST['data1']), JSON_UNESCAPED_UNICODE);
+            $data = ['foo1' => 'bar1', 'foo2' => 'bar2'];
+            $response = new JsonResponse(['data' => 123]);
+            // if you don't know the data to send when creating the response
+            $response = new JsonResponse();
+            // ...
+            $response->setData(['data' => 123]);
+            // if the data to send is already encoded in JSON
+            //$response = JsonResponse::fromJsonString('{ "data": 123 }');
+
+            return $response;
+        }
+        return new Response('This is not ajax!', 400);
     }
 
     /**

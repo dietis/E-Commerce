@@ -70,11 +70,55 @@ class User implements UserInterface
      */
     private $User_shoppingCart;
 
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank()
+     */
+    private $city;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank()
+     */
+    private $street;
+
+    /**
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\NotBlank()
+     */
+    private $state;
+
+
     public function __construct()
     {
         $this->roles = array('ROLE_USER');
         $this->User_orders = new ArrayCollection();
     }
+    public function getCity()
+    {
+        return $this->city;
+    }
+    public function setCity($city)
+    {
+        $this->city = $city;
+    }
+    public function getStreet()
+    {
+        return $this->street;
+    }
+    public function setStreet($street)
+    {
+        $this->street = $street;
+    }
+    public function getState()
+    {
+        return $this->state;
+    }
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
 
     // other properties and methods
 

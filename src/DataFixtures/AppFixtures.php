@@ -22,7 +22,9 @@ class AppFixtures extends Fixture
             $user->setEmail('root@root.com');
             $user->setUsername('root');
             $user->setRoles(array('ROLE_ADMIN'));
-
+            $user->setCity('Marseille !!!');
+            $user->setStreet('88, Jean mermoz');
+            $user->setState('France');
             $password = $this->encoder->encodePassword($user, 'root');
             $user->setPassword($password);
 

@@ -19,9 +19,9 @@
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="{{ path('home_page') }}">
         <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">
-        <span class="menu-collapsed">Brand</span>
+        <span class="menu-collapsed">Mamazon</span>
     </a>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ml-auto">
@@ -89,7 +89,7 @@
             </a>
             <!-- Submenu content -->
             <div id='submenu2' class="collapse sidebar-submenu">
-                <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                <a href="{{ path('user_settings_page') }}" class="list-group-item list-group-item-action bg-dark text-white">
                     <span class="menu-collapsed">Settings</span>
                 </a>
                 <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
@@ -138,8 +138,6 @@
     </div><!-- sidebar-container END -->
     <!-- MAIN -->
     <div class="col p-4">
-    </div>
-    <div class="col p-4">
         <h1 class="display-4">Hot Products</h1>
         <div class="card">
             <h5 class="card-header font-weight-light">Promo 10%</h5>
@@ -151,14 +149,14 @@
     </div><!-- Main Col END -->
 </div><!-- body-row END -->
 
-    {% block javascripts %}
-    {% endblock %}
     <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" crossorigin="anonymous"></script>
     <!-- Popper.JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{{ asset('js/main.js') }}"></script>
+    {% block javascripts %}
+    {% endblock %}
     </body>
 </html>
