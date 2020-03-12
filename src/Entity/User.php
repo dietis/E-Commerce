@@ -2,6 +2,8 @@
 // src/Entity/User.php
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -58,9 +60,20 @@ class User implements UserInterface
     */
     private $apiToken;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Order", mappedBy="fk_User")
+     */
+    private $User_orders;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\ShoppingCart", mappedBy="fk_User", cascade={"persist", "remove"})
+     */
+    private $User_shoppingCart;
+
     public function __construct()
     {
         $this->roles = array('ROLE_USER');
+        $this->User_orders = new ArrayCollection();
     }
 
     // other properties and methods
@@ -124,5 +137,54 @@ class User implements UserInterface
 
     public function eraseCredentials()
     {
+    }
+
+    /**
+     * @return Collection|Order[]
+     */
+    public function getUserOrders(): Collection
+    {
+        return $this->User_orders;
+    }
+
+    public function addUserOrder(Order $userOrder): self
+    {
+        if (!$this->User_orders->contains($userOrder)) {
+            $this->User_orders[] = $userOrder;
+            $userOrder->setFkUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserOrder(Order $userOrder): self
+    {
+        if ($this->User_orders->contains($userOrder)) {
+            $this->User_orders->removeElement($userOrder);
+            // set the owning side to null (unless already changed)
+            if ($userOrder->getFkUser() === $this) {
+                $userOrder->setFkUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUserShoppingCart(): ?ShoppingCart
+    {
+        return $this->User_shoppingCart;
+    }
+
+    public function setUserShoppingCart(?ShoppingCart $User_shoppingCart): self
+    {
+        $this->User_shoppingCart = $User_shoppingCart;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newFk_User = null === $User_shoppingCart ? null : $this;
+        if ($User_shoppingCart->getFkUser() !== $newFk_User) {
+            $User_shoppingCart->setFkUser($newFk_User);
+        }
+
+        return $this;
     }
 }
