@@ -3,6 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use App\Entity\Store;
+
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -29,6 +31,17 @@ class AppFixtures extends Fixture
             $user->setPassword($password);
 
             $manager->persist($user);
+
+            $newstore = new Store();
+            $newstore->setName('Nikee');
+            $newstore->setDescription('Sportswear');
+            $newstore->setEnabled(1);
+            $newstore->setCreatedAt(new \DateTime());
+            $newstore->setUpdatedAt(new \DateTime());
+            $newstore->setIdStore(1);
+
+            $manager->persist($newstore);
+
         $manager->flush();
     }
 }
