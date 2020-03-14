@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello NewItemController!{% endblock %}
+
+{% block body %}
+    
+    {{ form_start(item_form, { 'attr' : {'id' : 'custom_item_form'} }) }}
+        {{ form(item_form) }}
+    {{ form_end(item_form, { 'attr' : {'id' : 'custom_item_form'} }) }}   
+
+{% endblock %}
