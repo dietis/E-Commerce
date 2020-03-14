@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\Save_user;
 use App\Form\LoginForm;
 use App\Entity\User;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class User_gestion extends AbstractController
 {
@@ -48,21 +51,37 @@ class User_gestion extends AbstractController
      /**
      * @Route("/User/profile/settings/save", name="user_settings_ajax")
      */
-    public function settings_validate(Request $request) {
+    public function settings_validate(Request $request, LoggerInterface $logger) {
         if ($request->isXMLHttpRequest()) {         
             //$json = json_encode(array('data' => $_POST['data1']), JSON_UNESCAPED_UNICODE);
             $data = ['foo1' => 'bar1', 'foo2' => 'bar2'];
-            $response = new JsonResponse(['data' => 123]);
-            // if you don't know the data to send when creating the response
             $response = new JsonResponse();
-            // ...
-            $response->setData(['data' => 123]);
-            // if the data to send is already encoded in JSON
-            //$response = JsonResponse::fromJsonString('{ "data": 123 }');
-
+            $response->setStatusCode(Response::HTTP_OK);
+            $response->setData(['result' => "success"]);
+            $maname = $request->request->all();
+            if ($maname) {
+                $user = $this->getUser();
+                $userid = $user->getId();
+                $logger->error('An error occurred ' . json_encode($user->getId()));
+                //$user->setUsername($maname['name']);
+                //$user->setStreet($maname['street']);
+                //$user->setCity($maname['city']);
+                //$user->setState($maname['state']);
+                $newuser = $this->getDoctrine()->getManager();
+                $entityManager = $this->getDoctrine()->getManager();
+                $newuser = $this->getDoctrine()->getRepository(User::class)->find($userid);
+                $newuser->setUsername($maname['name']);
+                $newuser->setStreet($maname['street']);
+                $newuser->setCity($maname['city']);
+                $newuser->setState($maname['state']);
+                $entityManager->persist($newuser);
+                $entityManager->flush();
+                $logger->info('Le compte a bien été modifié ;)');
+            }
             return $response;
         }
-        return new Response('This is not ajax!', 400);
+        else
+            return new Response('This is not ajax!', 400);
     }
 
     /**

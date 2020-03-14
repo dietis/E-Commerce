@@ -34,6 +34,12 @@
             <li class="nav-item">
                 <a class="nav-link" href="#top">Pricing</a>
             </li>
+            {% if is_granted('ROLE_ADMIN') %}
+            <li class="nav-item red"><a  class="nav-link" href="{{ path('admin_page') }}"> Go to Admin Panel ? </a></li>
+            {% else %}
+            <li class="nav-item"><a class="nav-link" href="{{ path('user_page') }}"> Go to your profile ? </a></li>
+            {% endif %}
+
             <!-- This menu is hidden in bigger devices with d-sm-none. 
            The sidebar isn't proper for smaller screens imo, so this dropdown menu can keep all the useful sidebar itens exclusively for smaller screens  -->
             <li class="nav-item dropdown d-sm-block d-md-none">
@@ -137,16 +143,17 @@
         </ul><!-- List Group END-->
     </div><!-- sidebar-container END -->
     <!-- MAIN -->
-    <div class="col p-4">
-        <h1 class="display-4">Hot Products</h1>
+    <!--<div class="col p-4">
+        <h1 class="display-4">Hello to Mamazon</h1>
         <div class="card">
-            <h5 class="card-header font-weight-light">Promo 10%</h5>
+            <h5 class="card-header font-weight-light"></h5>
             <div class="card-body">
-    {% block body %}
-    {% endblock %}
             </div>
         </div>
-    </div><!-- Main Col END -->
+    </div>-->
+    {% block body %}
+    {% endblock %}
+    <!-- Main Col END -->
 </div><!-- body-row END -->
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->

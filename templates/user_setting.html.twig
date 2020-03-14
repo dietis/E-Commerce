@@ -2,44 +2,53 @@
 {% block title %}{{ user.getEmail() }}!{% endblock %}
 {% block body %}
 
-<div class="container">
-    <div class="well">
-      <form class="form-horizontal">
-        <h3 class="text-center">Customer Profile</h3>
-        <hr />
-        <div class="form-group">
-          <label for="ID" class="control-label col-sm-3">Roles:</label>
-          <div class="form-control-static col-sm-7">
-             <label>{{ user.getRoles()|json_encode(constant('JSON_PRETTY_PRINT')) }}</label>
-          </div>
+    <div class="col p-4">
+        <h1 class="display-4">Profile</h1>
+        <div class="card">
+            <h5 class="card-header font-weight-light">Customer Profile</h5>
+            <div class="card-body">
+              <div class="container">
+                <div class="well">
+                  <form class="form-horizontal">
+                    <h3 class="text-center">Auto saving input</h3>
+                    <hr />
+                    <div class="form-group">
+                      <label for="ID" class="control-label col-sm-3">Roles:</label>
+                      <div class="form-control-static col-sm-7">
+                         <label>{{ user.getRoles()|json_encode(constant('JSON_PRETTY_PRINT')) }}</label>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="form-control-static col-sm-3">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" aria-describedby="emailHelp" value="{{ user.getusername() }}">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your username  with anyone else.</small>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="form-control-static col-sm-3">
+                        <label for="street">Street:</label>
+                        <input type="text" class="form-control" id="street" value="{{ user.getStreet() }}">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="form-control-static col-sm-3">
+                        <label for="City">City:</label>
+                        <input type="text" class="form-control" id="City" value="{{ user.getCity() }}">
+                      </div>
+                      <div class="form-control-static col-sm-3">
+                        <label for="State">State:</label>
+                        <input type="text" class="form-control" id="State" value="{{ user.getState() }}">
+                      </div>
+                    </div>
+              
+                  </form>
+                </div>
+              </div>
+            
+            </div>
         </div>
-        <div class="form-group">
-          <div class="form-control-static col-sm-3">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" aria-describedby="emailHelp" value="{{ user.getusername() }}">
-            <small id="emailHelp" class="form-text text-muted">We'll never share your username  with anyone else.</small>
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="form-control-static col-sm-3">
-            <label for="street">Street:</label>
-            <input type="text" class="form-control" id="street" value="{{ user.getStreet() }}">
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="form-control-static col-sm-3">
-            <label for="City">City:</label>
-            <input type="text" class="form-control" id="City" value="{{ user.getCity() }}">
-          </div>
-          <div class="form-control-static col-sm-3">
-            <label for="State">State:</label>
-            <input type="text" class="form-control" id="State" value="{{ user.getState() }}">
-          </div>
-        </div>
-  
-      </form>
     </div>
-  </div>
   {% endblock %}
 {% block javascripts %}
 <script>
@@ -50,14 +59,12 @@
             var city = $('#City').val();
             var state = $('#State').val();
             //alert($name + $street + $city + $state)
-            var user = {"user" :[{"name" : name, "street" : street, "city" : city, "state" : state}]};
+            var user = {"name" : name, "street" : street, "city" : city, "state" : state};
 
             $.ajax({
-                dataType : "json",
                 type: 'POST',
-                contentType: "application/json",
-                url: "/User/profile/settings/save",
-                data: JSON.stringify(user),
+                url: "{{ path('user_settings_ajax') }}",
+                data: user,
                 success : function(result) {
                     //alert(JSON.stringify(result)); // result is an object which is created from the returned JSON
                     console.log("gg");

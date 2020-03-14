@@ -3,14 +3,32 @@
 {% block title %}{{ page_title }}!{% endblock %}
 
 {% block body %}
-<h1>{{ page_title }}!</h1>
         {#{% if user.isLoggedIn %}
             Hello {{ user.name }}!
         {% endif %}#}
-        {% if is_granted('ROLE_ADMIN') %}
-            <li><a href="{{ path('admin_page') }}"> Go to Admin Panel ? </a></li>
-            {% else %}
-            <li><a href="{{ path('user_page') }}"> Go to your profile ? </a></li>
-        {% endif %}
-        {# ... #}
+        <div class="container">
+        <div class="flex-wrap">
+        <div class="container text-center">
+            <h1 class="display-4">Hot products</h1>
+            <div class="d-inline-flex pb-1">
+                <h6>how many products...</h6><select>
+                    <option>1</option>
+                    <option>10</option>
+                    <option>100</option>
+                    <option>1000</option>
+                </select>
+            </div>
+        <div class="row justify-content-center">
+                <div class="col-3">
+                <div class="card">
+                    <h5 class="card-header font-weight-light text-center">First item</h5>
+                    <div class="card-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{# ... #}
 {% endblock %}

@@ -7,19 +7,20 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\StoreRepository")
+ * @ORM\Entity
  */
 class Store
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\Id
      * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue()
      */
     private $id;
 
     /**
      * @ORM\Column(type="integer")
+     * 
      */
     private $IdStore;
 

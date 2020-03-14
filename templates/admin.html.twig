@@ -3,11 +3,124 @@
 {% block title %}{{ page_title }}!{% endblock %}
 
 {% block body %}
-<h1>{{ page_title }}!</h1>
         {% if is_granted('ROLE_ADMIN') %}
-            <h3>Hello Admin !</h3>
-            {% else %}
+            <div class="container">
+                <div class="flex-wrap">
+                <div class="container text-center">
+                <h3>Hello Admin !</h3>
+                    <div class="row justify-content-center">
+                <div class="col-12">
+
+                <div class="accordion" id="accordion">
+                    <h2>Ajouts / Create</h2>
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0 font-weight-light text-center">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                              Ajouts d'un Magasin
+                            </button>
+                          </h2>
+                    <div class="card-body">
+                    </div>
+                </div>
+                </div>
+
+                <div id="collapseOne" class="collapse border-default" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <div style="border-radius: 5px;
+                        background-color: #f2f2f2;
+                        padding: 20px;">
+                            <form>
+                              <label for="name">Name :</label>
+                              <input type="text" id="name" name="firstname" placeholder="Store's name.." style="width: 100%;
+                              padding: 12px 20px;
+                              margin: 8px 0;
+                              display: inline-block;
+                              border: 1px solid #ccc;
+                              border-radius: 4px;
+                              box-sizing: border-box;">
+
+                              <label for="description">Description</label>
+                              <input type="textarea" id="description" placeholder="Description.." style="width: 100%;
+                              padding: 12px 20px;
+                              margin: 8px 0;
+                              display: inline-block;
+                              border: 1px solid #ccc;
+                              border-radius: 4px;
+                              box-sizing: border-box;">
+                          
+                              <label for="state">State :</label>
+                              <select id="state" name="country" style="width: 100%;
+                              padding: 12px 20px;
+                              margin: 8px 0;
+                              display: inline-block;
+                              border: 1px solid #ccc;
+                              border-radius: 4px;
+                              box-sizing: border-box;">
+                                <option value="enabled">Enabled</option>
+                                <option value="disabled">Deactivated</option>
+                              </select>
+                            
+                              <input type="submit" value="Submit" id="submitmag" onmouseover="this.style.background='#45a049';" onmouseout="this.style.background='#4CAF50';"
+                              style="  width: 100%;
+                              background-color: #4CAF50;
+                              color: white;
+                              padding: 14px 20px;
+                              margin: 8px 0;
+                              border: none;
+                              border-radius: 4px;
+                              cursor: pointer;">
+                            </form>
+                          </div>
+                          
+                    </div>
+                  </div>
+                </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    {% else %}
             <li><a href="{{ path('home_page') }}"> No right to be there ! </a></li>
         {% endif %}
         {# ... #}
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(document).ready(function() {
+        $('#submitmag').click(function(e) {
+            alert("clicked");
+            e.preventDefault();
+
+            var nom = $('#name').val();
+            var description = $('#description').val();
+            var etat;
+            if ($('#state').val() == "enabled") {
+                etat = 1;
+            }
+            else {
+                etat = 0;
+            }
+            var store = {'name' : nom, 'description' : description, 'state' : etat};
+            $.ajax({
+                type: 'POST',
+                url: "{{ path('store_create_ajax') }}",
+                data: store,
+                success : function(result) {
+                    //alert(JSON.stringify(result)); // result is an object which is created from the returned JSON
+                    console.log("gg");
+                },
+                error: function (e) {
+                    alert('Error ' + JSON.stringify(e));
+                   }
+            });
+        });
+    });
+</script>
 {% endblock %}

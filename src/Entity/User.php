@@ -94,6 +94,10 @@ class User implements UserInterface
         $this->roles = array('ROLE_USER');
         $this->User_orders = new ArrayCollection();
     }
+    public function getId()
+    {
+        return $this->id;
+    }
     public function getCity()
     {
         return $this->city;
