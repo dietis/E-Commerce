@@ -70,6 +70,11 @@ class Item
      */
     private $updatedAt;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    public $numberSold;
+
     public function __construct()
     {
         $this->fk_Store = new ArrayCollection();

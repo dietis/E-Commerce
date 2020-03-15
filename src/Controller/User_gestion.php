@@ -52,7 +52,7 @@ class User_gestion extends AbstractController
      * @Route("/User/profile/settings/save", name="user_settings_ajax")
      */
     public function settings_validate(Request $request, LoggerInterface $logger) {
-        if ($request->isXMLHttpRequest()) {         
+        if ($request->isXMLHttpRequest()) {
             //$json = json_encode(array('data' => $_POST['data1']), JSON_UNESCAPED_UNICODE);
             $data = ['foo1' => 'bar1', 'foo2' => 'bar2'];
             $response = new JsonResponse();

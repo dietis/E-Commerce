@@ -238,16 +238,16 @@
                 <div id="collapsemodifTwo" class="collapse border-default" aria-labelledby="headingmodifTwo" data-parent="#accordion">
 
                     {% for items in all_items %}
-                    <div class="card-body">
+                    <div class="card-body mx-auto" style="width: 50%;">
                         <div style="border-radius: 5px;
                         background-color: #f2f2f2;
                         padding: 20px;">
                         <img src="{{asset('/images/')}}{{items.getImage()}}" alt="..." class="img-thumbnail">
                             <form>
-                              <input type="text" class="hidden_id" value="{{ items.getid() }}">
+                              <input type="text" class="hidden_modify_item" id="{{ items.getid() }}" hidden value="{{ items.getid() }}">
 
                               <label for="name_item">Name :</label>
-                              <input type="text" id="name_item" name="firstname" placeholder="Product Name.." value="{{ items.name() }}" style="width: 100%;
+                              <input type="text" class="name_item_modify" id="{{ items.getid() }}" name="firstname" placeholder="Product Name.." value="{{ items.name() }}" style="width: 100%;
                               padding: 12px 20px;
                               margin: 8px 0;
                               display: inline-block;
@@ -256,7 +256,7 @@
                               box-sizing: border-box;">
 
                               <label for="price">Price</label>
-                              <input type="textarea" id="price" value="{{ items.price() }}" placeholder="10 €.." style="width: 100%;
+                              <input type="textarea" class="price_item_modify" id="{{ items.getid() }}" value="{{ items.price() }}" placeholder="10 €.." style="width: 100%;
                               padding: 12px 20px;
                               margin: 8px 0;
                               display: inline-block;
@@ -265,7 +265,7 @@
                               box-sizing: border-box;">
 
                               <label for="weight">Weight</label>
-                              <input type="textarea" id="weight" value="{{ items.weight() }}" placeholder="1 Kg..." style="width: 100%;
+                              <input type="textarea" class="weight_item_modify" id="{{ items.getid() }}" value="{{ items.weight() }}" placeholder="1 Kg..." style="width: 100%;
                               padding: 12px 20px;
                               margin: 8px 0;
                               display: inline-block;
@@ -273,26 +273,26 @@
                               border-radius: 4px;
                               box-sizing: border-box;">
 
-                              <label for="magasin">Market :</label>
-                              <select id="magasin" name="magasin_input" style="width: 100%;
+                              <label for="magasin_item_modify">Market :</label>
+                              <select class="magasin_item_modify" name="magasin_input_item_modify"  id="{{ items.getid() }}" style="width: 100%;
                               padding: 12px 20px;
                               margin: 8px 0;
                               display: inline-block;
                               border: 1px solid #ccc;
                               border-radius: 4px;
                               box-sizing: border-box;">
-                              <option value="0">No seller</option>
                               {% for store in all_store %}
-
                               {% for astore in items.getFkStore() %}
                                 {% if astore.getid() == store.getid() %}
-                                <option value="{{ store.getid()|e }}">{{ items.getName() }}</option>
+                                <option value="{{ store.getid()|e }}" selected>{{ store.getName() }}</option>
+                                {% else %}
+                                <option value="{{ store.getid()|e }}">{{ store.getName() }}</option>
                                 {% endif %}
                               {% endfor %}
                                 {% endfor %}
                               </select>
                             
-                              <input type="submit" value="Submit" id="submititemodify" onmouseover="this.style.background='#45a049';" onmouseout="this.style.background='#4CAF50';"
+                              <input type="submit" value="Submit" class="submititemodify" id="{{ items.getid() }}" onmouseover="this.style.background='#45a049';" onmouseout="this.style.background='#4CAF50';"
                               style="  width: 100%;
                               background-color: #4CAF50;
                               color: white;
@@ -301,8 +301,9 @@
                               border: none;
                               border-radius: 4px;
                               cursor: pointer;">
-                              <input type="file" id="imgitem">
+                              <input type="file" name="image" class="img_item_modify" id="{{ items.getid() }}">
                             </form>
+
                           </div>
                           
                     </div>
@@ -328,8 +329,7 @@
 <script>
     $(document).ready(function() {
         $('#submitmag').click(function(e) {
-            alert("clicked");
-            e.preventDefault();
+          e.preventDefault();
 
             var nom = $('#name_item').val();
             var description = $('#description').val();
@@ -390,6 +390,40 @@
                 });
             }
             });
+
+            $('.submititemodify').click(function(e) {
+              e.preventDefault();
+              //alert(this.id);
+              alert("console log ggg  " + $('#'+this.id+'.name_item_modify').val());
+            if ($('#'+this.id+'.name_item_modify').val() != "") {
+              var formData = new FormData();
+              formData.append("id", $('#'+this.id+".hidden_modify_item").val());
+              formData.append("name", $('#'+this.id+'.name_item_modify').val());
+              formData.append("price", $('#'+this.id+'.price_item_modify').val());
+              formData.append("weight", $('#'+this.id+'.weight_item_modify').val());
+              formData.append("store", $('#'+this.id+'.magasin_item_modify').val());
+              var file = $('#'+this.id+".img_item_modify").prop('files')[0];
+              if (file)
+                formData.append('photo', file, file.name);
+              $.ajax({
+                  type: 'POST',
+                  url: "{{ path('item_modify_ajax') }}",
+                  data: formData,
+                  //data: new FormData(form),// the formData function is available in almost all new browsers.
+                  contentType: false,   // indique à jQuery de ne pas configurer le contentType
+                  processData: false,  // indique à jQuery de ne pas traiter les données
+                  cache:false,
+                  dataType:"json", // Change this according to your response from the server.
+                  success : function(result) {
+                      //alert(JSON.stringify(result)); // result is an object which is created from the returned JSON
+                      console.log("gg");
+                  },
+                  error: function (e) {
+                      alert('Error ' + JSON.stringify(e));
+                  }
+              });
+          }
     });
+  });
 </script>
 {% endblock %}

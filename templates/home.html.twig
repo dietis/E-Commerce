@@ -8,27 +8,53 @@
         {% endif %}#}
         <div class="container">
         <div class="flex-wrap">
-        <div class="container text-center">
+        <div class="col-auto text-center" id="thisone">
             <h1 class="display-4">Hot products</h1>
             <div class="d-inline-flex pb-1">
-                <h6>how many products...</h6><select>
-                    <option>1</option>
-                    <option>10</option>
-                    <option>100</option>
-                    <option>1000</option>
-                </select>
+                <h6>how many products...</h6><br />
+                <label> Infinite scroll ;)... </label>
             </div>
+
+        {% set myVal = 0 %}
+        {% for items in all_items|sort((a, b) => a.numberSold <=> b.numberSold)|slice(0,2) %}
+            {% set myVal = myVal + 1 %}
         <div class="row justify-content-center">
-                <div class="col-3">
-                <div class="card">
-                    <h5 class="card-header font-weight-light text-center">First item</h5>
-                    <div class="card-body">
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="ma_card">
+  <div class="photo">
+    <img src="{{asset('/images/')}}{{items.getImage()}}" alt="..." class="img-thumbnail">
+  </div>
+  <div class="description">
+    <h2 class="ma_h2">{{ items.getname() }}</h2>
+    <h4 class="ma_h4">Price</h4>
+    <h1 class="ma_h1">{{ items.getPrice() }} €</h1>
+    <p class="ma_p">{{ items.getWeight() }} Kg</p>
+    <button class="ma_button">Add to Cart</button>
+  </div>
+</div>
+</div>
+<br/>
+        {% endfor %}
     </div>
 </div>
 </div>
-{# ... #}
+ {# ... #}
+<script>
+
+    $(document).ready(function() {
+        var idx = {{ myVal }};
+        $(window).scroll(function() {
+            if($(window).scrollTop() == $(document).height() - $(window).height()) {
+                {% for items in all_items|sort((a, b) => a.numberSold <=> b.numberSold)|slice(myVal, myVal+2) %}
+                    {% set myVal = myVal + 1 %}
+                    if (idx < {{myVal}}) {
+                        idx++;
+                    alert('{{myVal}} {{all_items | length}}');
+                    $('#thisone').append("<br/><div class='row justify-content-center'><div class='ma_card'><div class='photo'><img src='{{asset("/images/")}}{{items.getImage()}}' alt='...' class='img-thumbnail'></div><div class='description'><h2 class='ma_h2'>{{ items.getname() }}</h2><h4 class='ma_h4'>Price</h4><h1 class='ma_h1'>{{ items.getPrice() }} €</h1><p class='ma_p'>{{ items.getWeight() }} Kg</p><button class='ma_button'>Add to Cart</button></div></div></div><br/>");
+                    }
+                {% endfor %}
+            }
+        });
+    });
+</script>
+
 {% endblock %}
