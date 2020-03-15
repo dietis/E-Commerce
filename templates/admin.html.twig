@@ -94,48 +94,50 @@
                         <div style="border-radius: 5px;
                         background-color: #f2f2f2;
                         padding: 20px;">
-                            <form>
-                              <label for="name_item">Name :</label>
-                              <input type="text" id="name_item" name="firstname" placeholder="Product Name.." style="width: 100%;
+                            <form method="post" id="form_add_item">
+                              <label for="item_add_name">Name :</label>
+                              <input type="text" id="item_add_name" name="name" placeholder="Product Name.." style="width: 100%;
                               padding: 12px 20px;
                               margin: 8px 0;
                               display: inline-block;
                               border: 1px solid #ccc;
                               border-radius: 4px;
-                              box-sizing: border-box;">
+                              box-sizing: border-box;" />
 
-                              <label for="price">Price</label>
-                              <input type="textarea" id="price" placeholder="10 €.." style="width: 100%;
+                              <label for="price_add">Price :</label>
+                              <input type="textarea" name="price" id="price_add" placeholder="10 €.." style="width: 100%;
                               padding: 12px 20px;
                               margin: 8px 0;
                               display: inline-block;
                               border: 1px solid #ccc;
                               border-radius: 4px;
-                              box-sizing: border-box;">
+                              box-sizing: border-box;" />
 
-                              <label for="weight">Weight</label>
-                              <input type="textarea" id="weight" placeholder="1 Kg..." style="width: 100%;
+                              <label for="weight_add">Weight :</label>
+                              <input type="text" name"poids" id="weight_add" placeholder="1 Kg..." style="width: 100%;
                               padding: 12px 20px;
                               margin: 8px 0;
                               display: inline-block;
                               border: 1px solid #ccc;
                               border-radius: 4px;
-                              box-sizing: border-box;">
+                              box-sizing: border-box;" />
 
-                              <label for="magasin">Market :</label>
-                              <select id="magasin" name="magasin_input" style="width: 100%;
+                              <label for="magasin_add">Market :</label>
+                              <select id="magasin_add" name="store" style="width: 100%;
                               padding: 12px 20px;
                               margin: 8px 0;
                               display: inline-block;
                               border: 1px solid #ccc;
                               border-radius: 4px;
-                              box-sizing: border-box;">
+                              box-sizing: border-box;" />
                               <option value="0">No seller</option>
                               {% for store in all_store %}
                                 <option value="{{ store.getid()|e }}">{{ store.getname()|e }}</option>
                                 {% endfor %}
                               </select>
                             
+                              <input type="file" id="img_add" name="file_input" />
+                              
                               <input type="submit" value="Submit" id="submititem" onmouseover="this.style.background='#45a049';" onmouseout="this.style.background='#4CAF50';"
                               style="  width: 100%;
                               background-color: #4CAF50;
@@ -144,7 +146,7 @@
                               margin: 8px 0;
                               border: none;
                               border-radius: 4px;
-                              cursor: pointer;">
+                              cursor: pointer;" />
                             </form>
                           </div>
                           
@@ -225,7 +227,7 @@
                     <div class="card-header" id="headingOne">
                         <h2 class="mb-0 font-weight-light text-center">
                             <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapsemodifTwo" aria-expanded="true" aria-controls="collapsemodifTwo">
-                              Ajouts d'un Produit
+                              Modif d'un Produit
                             </button>
                           </h2>
                     <div class="card-body">
@@ -234,13 +236,18 @@
                 </div>
 
                 <div id="collapsemodifTwo" class="collapse border-default" aria-labelledby="headingmodifTwo" data-parent="#accordion">
+
+                    {% for items in all_items %}
                     <div class="card-body">
                         <div style="border-radius: 5px;
                         background-color: #f2f2f2;
                         padding: 20px;">
+                        <img src="{{asset('/images/')}}{{items.getImage()}}" alt="..." class="img-thumbnail">
                             <form>
+                              <input type="text" class="hidden_id" value="{{ items.getid() }}">
+
                               <label for="name_item">Name :</label>
-                              <input type="text" id="name_item" name="firstname" placeholder="Product Name.." style="width: 100%;
+                              <input type="text" id="name_item" name="firstname" placeholder="Product Name.." value="{{ items.name() }}" style="width: 100%;
                               padding: 12px 20px;
                               margin: 8px 0;
                               display: inline-block;
@@ -249,7 +256,7 @@
                               box-sizing: border-box;">
 
                               <label for="price">Price</label>
-                              <input type="textarea" id="price" placeholder="10 €.." style="width: 100%;
+                              <input type="textarea" id="price" value="{{ items.price() }}" placeholder="10 €.." style="width: 100%;
                               padding: 12px 20px;
                               margin: 8px 0;
                               display: inline-block;
@@ -258,7 +265,7 @@
                               box-sizing: border-box;">
 
                               <label for="weight">Weight</label>
-                              <input type="textarea" id="weight" placeholder="1 Kg..." style="width: 100%;
+                              <input type="textarea" id="weight" value="{{ items.weight() }}" placeholder="1 Kg..." style="width: 100%;
                               padding: 12px 20px;
                               margin: 8px 0;
                               display: inline-block;
@@ -276,11 +283,16 @@
                               box-sizing: border-box;">
                               <option value="0">No seller</option>
                               {% for store in all_store %}
-                                <option value="{{ store.getid()|e }}">{{ store.getname()|e }}</option>
+
+                              {% for astore in items.getFkStore() %}
+                                {% if astore.getid() == store.getid() %}
+                                <option value="{{ store.getid()|e }}">{{ items.getName() }}</option>
+                                {% endif %}
+                              {% endfor %}
                                 {% endfor %}
                               </select>
                             
-                              <input type="submit" value="Submit" id="submititem" onmouseover="this.style.background='#45a049';" onmouseout="this.style.background='#4CAF50';"
+                              <input type="submit" value="Submit" id="submititemodify" onmouseover="this.style.background='#45a049';" onmouseout="this.style.background='#4CAF50';"
                               style="  width: 100%;
                               background-color: #4CAF50;
                               color: white;
@@ -289,10 +301,13 @@
                               border: none;
                               border-radius: 4px;
                               cursor: pointer;">
+                              <input type="file" id="imgitem">
                             </form>
                           </div>
                           
                     </div>
+                    {% endfor %}
+
                   </div>
 
                 </div>
@@ -340,21 +355,31 @@
                     }
                 });
         });
-
         $('#submititem').click(function(e) {
-            alert("clicked");
             e.preventDefault();
             //Ajout d'un produit
-            var nom = $('#name_item').val();
-            var price = $('#price').val();
-            var weight = $('#weight').val();
-            var store = $('#magasin').val();
-            var item = {'name' : nom, 'price' : price, 'store' : store, 'weight' : weight};
-            if (nom != "")
+
+            if ($('#item_add_name').val() != "") {
+                var formData = new FormData();
+                formData.append("name", $('#item_add_name').val());
+                formData.append("price", $('#price_add').val());
+                formData.append("weight", $('#weight_add').val());
+                formData.append("store", $('#magasin_add').val());
+                var file = $("#img_add").prop('files')[0];
+                formData.append('photo', file, file.name);
+                //var form = document.getElementById("form_add_item");
+                
+                //var form = $("#form_add_item")[0];
+                //form.append("Poids", $('#weight_add').val());
                 $.ajax({
                     type: 'POST',
                     url: "{{ path('item_create_ajax') }}",
-                    data: item,
+                    data: formData,
+                    //data: new FormData(form),// the formData function is available in almost all new browsers.
+                    contentType: false,   // indique à jQuery de ne pas configurer le contentType
+                    processData: false,  // indique à jQuery de ne pas traiter les données
+                    cache:false,
+                    dataType:"json", // Change this according to your response from the server.
                     success : function(result) {
                         //alert(JSON.stringify(result)); // result is an object which is created from the returned JSON
                         console.log("gg");
@@ -363,7 +388,8 @@
                         alert('Error ' + JSON.stringify(e));
                     }
                 });
-        });
+            }
+            });
     });
 </script>
 {% endblock %}

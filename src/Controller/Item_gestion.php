@@ -14,6 +14,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+
+use Symfony\Component\HttpFoundation\File\File;
+
 class Item_gestion extends AbstractController
 {
     /**
@@ -24,15 +28,37 @@ class Item_gestion extends AbstractController
             $response = new JsonResponse();
             $response->setStatusCode(Response::HTTP_OK);
             $mastore = $request->request->all();
+            $uploads = $request->files->get('photo');
 
             $logger->error('An error occurred ' . json_encode($mastore));
             if ($mastore) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $newitem = new Item();
+                if(!is_null($uploads)) {
+                    $logger->info('Not nulled = ' . json_encode($uploads) . $uploads->getClientOriginalExtension());
+    
+                    $fileName = md5(uniqid()).'.'.$uploads->guessExtension();
+    
+                    // set your uploads directory
+                    $uploadDir = $this->getParameter('kernel.project_dir') . '/public/images/';
+
+                    $logger->info('There = ' . $this->getParameter('kernel.project_dir'));
+                    if (!file_exists($uploadDir) && !is_dir($uploadDir)) {
+                        mkdir($uploadDir, 0775, true);
+                    }
+                    if ($uploads->move($uploadDir, $fileName)) { 
+                        $output['uploaded'] = true;
+                        $output['fileName'] = $fileName;
+                        $logger->info('Image bien sauvegarder' . json_encode($output));
+                        $newitem->setImage($fileName);
+                    }
+                }
+
                 $newitem->setName($mastore['name']);
                 $newitem->setPrice($mastore['price']);
                 $newitem->setWeight($mastore['weight']);
                 $newitem->setEnabled(1);
+
 
                 //recup fk magasin (id)
                 if ($mastore['store'] != 0) {
@@ -45,7 +71,7 @@ class Item_gestion extends AbstractController
                 //recup id
                 $lastItem = $this->getDoctrine()->getRepository(Item::class)->findOneBy([], ['IdItem' => 'desc']);
                 if ($lastItem) {
-                    $lastId = $lastItem->getIdStore();
+                    $lastId = $lastItem->getIdItem();
                     $logger->info('Store bien ajouté;) après ' . $lastId);
                     $newitem->setIdItem($lastId+1);
                 }

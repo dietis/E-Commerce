@@ -6,8 +6,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ItemRepository")
+ * @Vich\Uploadable
  */
 class Item
 {
@@ -48,9 +52,58 @@ class Item
      */
     private $Enabled;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $image;
+
+    /**
+     * @Vich\UploadableField(mapping="product_images", fileNameProperty="image")
+     * @var File
+     */
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @var \DateTime
+     */
+    private $updatedAt;
+
     public function __construct()
     {
         $this->fk_Store = new ArrayCollection();
+    }
+
+    public function setImageFile(File $image = null)
+    {
+        $this->imageFile = $image;
+
+        // VERY IMPORTANT:
+        // It is required that at least one field changes if you are using Doctrine,
+        // otherwise the event listeners won't be called and the file is lost
+        if ($image) {
+            // if 'updatedAt' is not defined in your entity, use another property
+            $this->updatedAt = new \DateTime('now');
+        }
+    }
+
+    public function getImageFile()
+    {
+        return $this->imageFile;
+    }
+
+    public function setImage($image)
+    {
+        $this->image = $image;
+
+        if ($image)
+            $this->updatedAt = new \DateTime('now');
+    }
+
+    public function getImage()
+    {
+        return $this->image;
     }
 
     public function getId(): ?int
@@ -114,6 +167,11 @@ class Item
         return $this->fk_Store;
     }
 
+    public function getFkStore_one(): string
+    {
+        return $this->fk_Store;
+    }
+
     public function addFkStore(Store $fkStore): self
     {
         if (!$this->fk_Store->contains($fkStore)) {
@@ -142,5 +200,9 @@ class Item
         $this->Enabled = $Enabled;
 
         return $this;
+    }
+    public function __toString(): string
+    {
+        return $this->id;
     }
 }
