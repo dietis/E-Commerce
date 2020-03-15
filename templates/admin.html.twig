@@ -11,8 +11,8 @@
                     <div class="row justify-content-center">
                 <div class="col-12">
 
-                <div class="accordion" id="accordion">
-                    <h2>Ajouts / Create</h2>
+                <h2>Ajouts / Create</h2>
+                <div class="accordion border-info border" id="accordion">
                 <div class="card">
                     <div class="card-header" id="headingOne">
                         <h2 class="mb-0 font-weight-light text-center">
@@ -75,9 +75,227 @@
                           
                     </div>
                   </div>
+
+                  <!-- ////////////////////////////    Items     \\\\\\\\\\\\\\\\\\\\\\\\-->
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0 font-weight-light text-center">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                              Ajouts d'un Produit
+                            </button>
+                          </h2>
+                    <div class="card-body">
+                    </div>
                 </div>
                 </div>
 
+                <div id="collapseTwo" class="collapse border-default" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div class="card-body">
+                        <div style="border-radius: 5px;
+                        background-color: #f2f2f2;
+                        padding: 20px;">
+                            <form>
+                              <label for="name_item">Name :</label>
+                              <input type="text" id="name_item" name="firstname" placeholder="Product Name.." style="width: 100%;
+                              padding: 12px 20px;
+                              margin: 8px 0;
+                              display: inline-block;
+                              border: 1px solid #ccc;
+                              border-radius: 4px;
+                              box-sizing: border-box;">
+
+                              <label for="price">Price</label>
+                              <input type="textarea" id="price" placeholder="10 €.." style="width: 100%;
+                              padding: 12px 20px;
+                              margin: 8px 0;
+                              display: inline-block;
+                              border: 1px solid #ccc;
+                              border-radius: 4px;
+                              box-sizing: border-box;">
+
+                              <label for="weight">Weight</label>
+                              <input type="textarea" id="weight" placeholder="1 Kg..." style="width: 100%;
+                              padding: 12px 20px;
+                              margin: 8px 0;
+                              display: inline-block;
+                              border: 1px solid #ccc;
+                              border-radius: 4px;
+                              box-sizing: border-box;">
+
+                              <label for="magasin">Market :</label>
+                              <select id="magasin" name="magasin_input" style="width: 100%;
+                              padding: 12px 20px;
+                              margin: 8px 0;
+                              display: inline-block;
+                              border: 1px solid #ccc;
+                              border-radius: 4px;
+                              box-sizing: border-box;">
+                              <option value="0">No seller</option>
+                              {% for store in all_store %}
+                                <option value="{{ store.getid()|e }}">{{ store.getname()|e }}</option>
+                                {% endfor %}
+                              </select>
+                            
+                              <input type="submit" value="Submit" id="submititem" onmouseover="this.style.background='#45a049';" onmouseout="this.style.background='#4CAF50';"
+                              style="  width: 100%;
+                              background-color: #4CAF50;
+                              color: white;
+                              padding: 14px 20px;
+                              margin: 8px 0;
+                              border: none;
+                              border-radius: 4px;
+                              cursor: pointer;">
+                            </form>
+                          </div>
+                          
+                    </div>
+                  </div>
+
+                </div>
+
+
+                <!-- ////////////////////         Modifications            \\\\\\\\\\\\\\\\\\\\\ -->
+                <h2>Modifications</h2>
+                <div class="accordion border-info border" id="accordion">
+                <div class="card">
+                    <div class="card-header" id="headingmodifOne">
+                        <h2 class="mb-0 font-weight-light text-center">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapsemodifOne" aria-expanded="true" aria-controls="collapsemodifOne">
+                              Modif des Magasin
+                            </button>
+                          </h2>
+                    <div class="card-body">
+                    </div>
+                </div>
+                </div>
+
+                <div id="collapsemodifOne" class="collapse border-default" aria-labelledby="headingmodifOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <div style="border-radius: 5px;
+                        background-color: #f2f2f2;
+                        padding: 20px;">
+                            <form>
+                              <label for="name">Name :</label>
+                              <input type="text" id="name" name="firstname" placeholder="Store's name.." style="width: 100%;
+                              padding: 12px 20px;
+                              margin: 8px 0;
+                              display: inline-block;
+                              border: 1px solid #ccc;
+                              border-radius: 4px;
+                              box-sizing: border-box;">
+
+                              <label for="description">Description</label>
+                              <input type="textarea" id="description" placeholder="Description.." style="width: 100%;
+                              padding: 12px 20px;
+                              margin: 8px 0;
+                              display: inline-block;
+                              border: 1px solid #ccc;
+                              border-radius: 4px;
+                              box-sizing: border-box;">
+                          
+                              <label for="state">State :</label>
+                              <select id="state" name="country" style="width: 100%;
+                              padding: 12px 20px;
+                              margin: 8px 0;
+                              display: inline-block;
+                              border: 1px solid #ccc;
+                              border-radius: 4px;
+                              box-sizing: border-box;">
+                                <option value="enabled">Enabled</option>
+                                <option value="disabled">Deactivated</option>
+                              </select>
+                            
+                              <input type="submit" value="Submit" id="submitmag" onmouseover="this.style.background='#45a049';" onmouseout="this.style.background='#4CAF50';"
+                              style="  width: 100%;
+                              background-color: #4CAF50;
+                              color: white;
+                              padding: 14px 20px;
+                              margin: 8px 0;
+                              border: none;
+                              border-radius: 4px;
+                              cursor: pointer;">
+                            </form>
+                          </div>
+                          
+                    </div>
+                  </div>
+
+                <!-- ////////////////////////////    Items     \\\\\\\\\\\\\\\\\\\\\\\\-->
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0 font-weight-light text-center">
+                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapsemodifTwo" aria-expanded="true" aria-controls="collapsemodifTwo">
+                              Ajouts d'un Produit
+                            </button>
+                          </h2>
+                    <div class="card-body">
+                    </div>
+                </div>
+                </div>
+
+                <div id="collapsemodifTwo" class="collapse border-default" aria-labelledby="headingmodifTwo" data-parent="#accordion">
+                    <div class="card-body">
+                        <div style="border-radius: 5px;
+                        background-color: #f2f2f2;
+                        padding: 20px;">
+                            <form>
+                              <label for="name_item">Name :</label>
+                              <input type="text" id="name_item" name="firstname" placeholder="Product Name.." style="width: 100%;
+                              padding: 12px 20px;
+                              margin: 8px 0;
+                              display: inline-block;
+                              border: 1px solid #ccc;
+                              border-radius: 4px;
+                              box-sizing: border-box;">
+
+                              <label for="price">Price</label>
+                              <input type="textarea" id="price" placeholder="10 €.." style="width: 100%;
+                              padding: 12px 20px;
+                              margin: 8px 0;
+                              display: inline-block;
+                              border: 1px solid #ccc;
+                              border-radius: 4px;
+                              box-sizing: border-box;">
+
+                              <label for="weight">Weight</label>
+                              <input type="textarea" id="weight" placeholder="1 Kg..." style="width: 100%;
+                              padding: 12px 20px;
+                              margin: 8px 0;
+                              display: inline-block;
+                              border: 1px solid #ccc;
+                              border-radius: 4px;
+                              box-sizing: border-box;">
+
+                              <label for="magasin">Market :</label>
+                              <select id="magasin" name="magasin_input" style="width: 100%;
+                              padding: 12px 20px;
+                              margin: 8px 0;
+                              display: inline-block;
+                              border: 1px solid #ccc;
+                              border-radius: 4px;
+                              box-sizing: border-box;">
+                              <option value="0">No seller</option>
+                              {% for store in all_store %}
+                                <option value="{{ store.getid()|e }}">{{ store.getname()|e }}</option>
+                                {% endfor %}
+                              </select>
+                            
+                              <input type="submit" value="Submit" id="submititem" onmouseover="this.style.background='#45a049';" onmouseout="this.style.background='#4CAF50';"
+                              style="  width: 100%;
+                              background-color: #4CAF50;
+                              color: white;
+                              padding: 14px 20px;
+                              margin: 8px 0;
+                              border: none;
+                              border-radius: 4px;
+                              cursor: pointer;">
+                            </form>
+                          </div>
+                          
+                    </div>
+                  </div>
+
+                </div>
 
             </div>
         </div>
@@ -98,7 +316,7 @@
             alert("clicked");
             e.preventDefault();
 
-            var nom = $('#name').val();
+            var nom = $('#name_item').val();
             var description = $('#description').val();
             var etat;
             if ($('#state').val() == "enabled") {
@@ -108,18 +326,43 @@
                 etat = 0;
             }
             var store = {'name' : nom, 'description' : description, 'state' : etat};
-            $.ajax({
-                type: 'POST',
-                url: "{{ path('store_create_ajax') }}",
-                data: store,
-                success : function(result) {
-                    //alert(JSON.stringify(result)); // result is an object which is created from the returned JSON
-                    console.log("gg");
-                },
-                error: function (e) {
-                    alert('Error ' + JSON.stringify(e));
-                   }
-            });
+            if (nom != "")
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ path('store_create_ajax') }}",
+                    data: store,
+                    success : function(result) {
+                        //alert(JSON.stringify(result)); // result is an object which is created from the returned JSON
+                        console.log("gg1");
+                    },
+                    error: function (e) {
+                        alert('Error ' + JSON.stringify(e));
+                    }
+                });
+        });
+
+        $('#submititem').click(function(e) {
+            alert("clicked");
+            e.preventDefault();
+            //Ajout d'un produit
+            var nom = $('#name_item').val();
+            var price = $('#price').val();
+            var weight = $('#weight').val();
+            var store = $('#magasin').val();
+            var item = {'name' : nom, 'price' : price, 'store' : store, 'weight' : weight};
+            if (nom != "")
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ path('item_create_ajax') }}",
+                    data: item,
+                    success : function(result) {
+                        //alert(JSON.stringify(result)); // result is an object which is created from the returned JSON
+                        console.log("gg");
+                    },
+                    error: function (e) {
+                        alert('Error ' + JSON.stringify(e));
+                    }
+                });
         });
     });
 </script>
