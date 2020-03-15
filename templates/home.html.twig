@@ -58,7 +58,7 @@
         $(document).on('click', '.ma_button', function() { 
             var formData = new FormData();
             var id_clicked = $('.ma_button').attr('id');
-            alert("test " + this.id);
+            //alert("test " + this.id);
             formData.append("id", this.id);
             $.ajax({
                 type: 'POST',
@@ -74,7 +74,7 @@
                     location.reload();
                 },
                 error: function (e) {
-                    alert('Error ' + JSON.stringify(e));
+                    //alert('Error ' + JSON.stringify(e));
                 }
             });
         });

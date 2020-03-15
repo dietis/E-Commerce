@@ -31,8 +31,8 @@
                         background-color: #f2f2f2;
                         padding: 20px;">
                             <form>
-                              <label for="name">Name :</label>
-                              <input type="text" id="name" name="firstname" placeholder="Store's name.." style="width: 100%;
+                              <label for="market_name_add">Name :</label>
+                              <input type="text" id="market_name_add" name="firstname" placeholder="Store's name.." style="width: 100%;
                               padding: 12px 20px;
                               margin: 8px 0;
                               display: inline-block;
@@ -40,8 +40,8 @@
                               border-radius: 4px;
                               box-sizing: border-box;">
 
-                              <label for="description">Description</label>
-                              <input type="textarea" id="description" placeholder="Description.." style="width: 100%;
+                              <label for="market_name_description">Description</label>
+                              <input type="textarea" id="market_name_description" placeholder="Description.." style="width: 100%;
                               padding: 12px 20px;
                               margin: 8px 0;
                               display: inline-block;
@@ -49,8 +49,8 @@
                               border-radius: 4px;
                               box-sizing: border-box;">
                           
-                              <label for="state">State :</label>
-                              <select id="state" name="country" style="width: 100%;
+                              <label for="market_name_state">State :</label>
+                              <select id="market_name_state" name="country" style="width: 100%;
                               padding: 12px 20px;
                               margin: 8px 0;
                               display: inline-block;
@@ -207,7 +207,7 @@
                                 <option value="disabled">Deactivated</option>
                               </select>
                             
-                              <input type="submit" value="Submit" id="submitmag" onmouseover="this.style.background='#45a049';" onmouseout="this.style.background='#4CAF50';"
+                              <input type="submit" value="Submit" id="submitmag_modify" onmouseover="this.style.background='#45a049';" onmouseout="this.style.background='#4CAF50';"
                               style="  width: 100%;
                               background-color: #4CAF50;
                               color: white;
@@ -328,19 +328,20 @@
 {% block javascripts %}
 <script>
     $(document).ready(function() {
-        $('#submitmag').click(function(e) {
+$('#submitmag').click(function(e) {
           e.preventDefault();
 
-            var nom = $('#name_item').val();
-            var description = $('#description').val();
+            var nom = $('#market_name_add').val();
+            var description = $('#market_name_description').val();
             var etat;
-            if ($('#state').val() == "enabled") {
+            if ($('#market_name_state').val() == "enabled") {
                 etat = 1;
             }
             else {
                 etat = 0;
             }
             var store = {'name' : nom, 'description' : description, 'state' : etat};
+            //alert(nom);
             if (nom != "")
                 $.ajax({
                     type: 'POST',
@@ -351,10 +352,11 @@
                         console.log("gg1");
                     },
                     error: function (e) {
-                        alert('Error ' + JSON.stringify(e));
+                        //alert('Error ' + JSON.stringify(e));
                     }
                 });
         });
+
         $('#submititem').click(function(e) {
             e.preventDefault();
             //Ajout d'un produit
@@ -385,7 +387,7 @@
                         console.log("gg");
                     },
                     error: function (e) {
-                        alert('Error ' + JSON.stringify(e));
+                        //alert('Error ' + JSON.stringify(e));
                     }
                 });
             }
@@ -394,7 +396,7 @@
             $('.submititemodify').click(function(e) {
               e.preventDefault();
               //alert(this.id);
-              alert("console log ggg  " + $('#'+this.id+'.name_item_modify').val());
+              //alert("console log ggg  " + $('#'+this.id+'.name_item_modify').val());
             if ($('#'+this.id+'.name_item_modify').val() != "") {
               var formData = new FormData();
               formData.append("id", $('#'+this.id+".hidden_modify_item").val());
@@ -419,7 +421,7 @@
                       console.log("gg");
                   },
                   error: function (e) {
-                      alert('Error ' + JSON.stringify(e));
+                      //alert('Error ' + JSON.stringify(e));
                   }
               });
           }

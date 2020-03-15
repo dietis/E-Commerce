@@ -6,11 +6,21 @@
 {# templates/registration/register.html.twig #}
 
 {{ form_start(form) }}
-    {{ form_row(form.username) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.plainPassword.first) }}
-    {{ form_row(form.plainPassword.second) }}
+    <div style="margin-top: 100px; margin-left: 500px;">
 
-    <button type="submit">Register!</button>
+        {{ form_row(form.username) }}
+        </br>
+        </br>
+        {{ form_row(form.email) }}
+        </br>
+        </br>
+        {{ form_row(form.plainPassword.first) }}
+        </br>
+        </br>
+        {{ form_row(form.plainPassword.second) }}
+        </br>
+        </br>
+        <button type="submit">Register!</button>
+    </div>
 {{ form_end(form) }}
 {% endblock %}

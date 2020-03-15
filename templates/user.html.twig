@@ -5,8 +5,10 @@
 {% block body %}
         {% if is_granted('ROLE_USER') %}
             {% else %}
-            <li><a href="{{ path('login') }}"> Wanna Login ? </a></li>
-            <li><a href="{{ path('user_register_page') }}"> Wanna Register ? </a></li>
+            <form method="post">
+            <button style="font-size: 20px; margin-left: 550px; margin-top: 250px; text-align: center;"><a style="text-decoration:none;" href="{{ path('login') }}"> Wanna Login ? </a></button></br>
+            <button style="font-size: 20px; margin-left: 550px; margin-top: 100px; text-align: center;"><a style="text-decoration:none;" href="{{ path('user_register_page') }}"> Wanna Register ? </a></button>
+            </form>
         {% endif %}
 
     {#
