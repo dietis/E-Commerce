@@ -41,17 +41,27 @@
 
 <script>
     $(document).ready(function() {
-        var idx = {{ myVal }};
+        var idx = 0;
+        var arr = [{}];
+        {% for items in all_items|sort((a, b) => a.numberSold <=> b.numberSold) %}
+        arr[idx] = {'img' : '{{items.getImage()}}', 
+                    'name': '{{ items.getname() }}',
+                    'price':'{{ items.getPrice() }}',
+                    'wgt' :'{{ items.getWeight() }}',
+                    'id' : '{{items.getid()}}',
+                    };
+                    idx++;
+        {% endfor %}
+        var len = 1;
+
         $(window).scroll(function() {
             if($(window).scrollTop() == $(document).height() - $(window).height()) {
-                {% for items in all_items|sort((a, b) => a.numberSold <=> b.numberSold)|slice(myVal, myVal+2) %}
-                    {% set myVal = myVal + 1 %}
-                    if (idx < {{myVal}}) {
-                        idx++;
-                    //alert('{{myVal}} {{all_items | length}}');
-                    $('#thisone').append("<br/><div class='row justify-content-center'><div class='ma_card'><div class='photo'><img src='{{asset("/images/")}}{{items.getImage()}}' alt='...' class='img-thumbnail'></div><div class='description'><h2 class='ma_h2'>{{ items.getname() }}</h2><h4 class='ma_h4'>Price</h4><h1 class='ma_h1'>{{ items.getPrice() }} €</h1><p class='ma_p'>{{ items.getWeight() }} Kg</p><button class='ma_button' id='{{items.getid()}}'>Add to Cart</button></div></div></div><br/>");
-                    }
-                {% endfor %}
+                if (len < idx) {
+                    //alert(JSON.stringify(arr[len]));
+                    //alert(len);
+                    $('#thisone').append("<br/><div class='row justify-content-center'><div class='ma_card'><div class='photo'><img src='{{asset("/images/")}}"+arr[len].img+"' alt='...' class='img-thumbnail'></div><div class='description'><h2 class='ma_h2'>"+arr[len].name+"</h2><h4 class='ma_h4'>Price</h4><h1 class='ma_h1'>"+arr[len].price+" €</h1><p class='ma_p'>"+arr[len].wgt+" Kg</p><button class='ma_button' id='"+arr[len].id+"'>Add to Cart</button></div></div></div><br/>");
+                    len+=1;
+                }
             }
         });
 

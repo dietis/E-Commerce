@@ -108,7 +108,7 @@
             {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('logout_url') }}" class="list-group-item list-group-item-action bg-dark text-white">
                     <span class="menu-collapsed">Logout</span>
-                </a>            
+                </a>
                 {% else %}
                 <a href="{{ path('login') }}" class="list-group-item list-group-item-action bg-dark text-white">
                     <span class="menu-collapsed">Login</span>
