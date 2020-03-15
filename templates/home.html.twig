@@ -28,7 +28,7 @@
     <h4 class="ma_h4">Price</h4>
     <h1 class="ma_h1">{{ items.getPrice() }} €</h1>
     <p class="ma_p">{{ items.getWeight() }} Kg</p>
-    <button class="ma_button">Add to Cart</button>
+    <button class="ma_button" id="{{items.getid()}}">Add to Cart</button>
   </div>
 </div>
 </div>
@@ -38,8 +38,8 @@
 </div>
 </div>
  {# ... #}
-<script>
 
+<script>
     $(document).ready(function() {
         var idx = {{ myVal }};
         $(window).scroll(function() {
@@ -48,13 +48,38 @@
                     {% set myVal = myVal + 1 %}
                     if (idx < {{myVal}}) {
                         idx++;
-                    alert('{{myVal}} {{all_items | length}}');
-                    $('#thisone').append("<br/><div class='row justify-content-center'><div class='ma_card'><div class='photo'><img src='{{asset("/images/")}}{{items.getImage()}}' alt='...' class='img-thumbnail'></div><div class='description'><h2 class='ma_h2'>{{ items.getname() }}</h2><h4 class='ma_h4'>Price</h4><h1 class='ma_h1'>{{ items.getPrice() }} €</h1><p class='ma_p'>{{ items.getWeight() }} Kg</p><button class='ma_button'>Add to Cart</button></div></div></div><br/>");
+                    //alert('{{myVal}} {{all_items | length}}');
+                    $('#thisone').append("<br/><div class='row justify-content-center'><div class='ma_card'><div class='photo'><img src='{{asset("/images/")}}{{items.getImage()}}' alt='...' class='img-thumbnail'></div><div class='description'><h2 class='ma_h2'>{{ items.getname() }}</h2><h4 class='ma_h4'>Price</h4><h1 class='ma_h1'>{{ items.getPrice() }} €</h1><p class='ma_p'>{{ items.getWeight() }} Kg</p><button class='ma_button' id='{{items.getid()}}'>Add to Cart</button></div></div></div><br/>");
                     }
                 {% endfor %}
             }
         });
+
+        $(document).on('click', '.ma_button', function() { 
+            var formData = new FormData();
+            var id_clicked = $('.ma_button').attr('id');
+            alert("test " + this.id);
+            formData.append("id", this.id);
+            $.ajax({
+                type: 'POST',
+                url: "{{ path('add_item_to_cart_ajax') }}",
+                data: formData,
+                contentType: false,   // indique à jQuery de ne pas configurer le contentType
+                processData: false,  // indique à jQuery de ne pas traiter les données
+                cache:false,
+                dataType:"json", // Change this according to your response from the server.
+                success : function(result) {
+                    //alert(JSON.stringify(result)); // result is an object which is created from the returned JSON
+                    //console.log("gg");
+                    location.reload();
+                },
+                error: function (e) {
+                    alert('Error ' + JSON.stringify(e));
+                }
+            });
+        });
     });
+
 </script>
 
 {% endblock %}

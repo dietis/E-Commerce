@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Form\Save_user;
 use App\Form\LoginForm;
 use App\Entity\User;
+use App\Entity\Item;
+use App\Entity\ShoppingCart;
+
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,10 +45,14 @@ class User_gestion extends AbstractController
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
         $usermail = $user->getEmail();
+        $all_carts = $this->getDoctrine()->getRepository(ShoppingCart::class)->findAll();
+        $all_items = $this->getDoctrine()->getRepository(Item::class)->findAll();
 
         return $this->render(
             'user_setting.html.twig',
-            array('user' => $user)
+            array('user' => $user,
+            'all_carts' => $all_carts,
+            'all_items' => $all_items)
         );
     }
      /**

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Store;
 use App\Entity\Item;
+use App\Entity\ShoppingCart;
 
 class Home extends AbstractController
 {
@@ -15,7 +16,6 @@ class Home extends AbstractController
     {
         // ...
     }
-
 
     public function home() {
         $request = Request::createFromGlobals();
@@ -27,6 +27,7 @@ class Home extends AbstractController
         //$this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $response;
     }
+
     /**
     * @Route("/", name="home_page")
     */
@@ -34,10 +35,14 @@ class Home extends AbstractController
         // ...
         $all_store = $this->getDoctrine()->getRepository(Store::class)->findAll();
         $all_items = $this->getDoctrine()->getRepository(Item::class)->findAll();
+        $all_carts = $this->getDoctrine()->getRepository(ShoppingCart::class)->findAll();
+        $user = $this->getUser();
         return $this->render('home.html.twig', [
             'page_title' => 'Mamazon',
             'all_store' => $all_store,
             'all_items' => $all_items,
+            'all_carts' => $all_carts,
+            'user' => $user,
         ]);
     }
 }

@@ -1,0 +1,384 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ page_title }}!{% endblock %}
+
+{% block body %}
+
+<style>
+* {
+  box-sizing: border-box;
+}
+ 
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: #7EC855;
+  font-family: 'Roboto', sans-serif;
+}
+
+.shopping-cart {
+  width: 750px;
+  height: auto;
+  margin: 80px auto;
+  background: #FFFFFF;
+  box-shadow: 1px 2px 3px 0px rgba(0,0,0,0.10);
+  border-radius: 6px;
+ 
+  display: flex;
+  flex-direction: column;
+}
+.title {
+  height: 60px;
+  border-bottom: 1px solid #E1E8EE;
+  padding: 20px 30px;
+  color: #5E6977;
+  font-size: 18px;
+  font-weight: 400;
+}
+ 
+.item {
+  padding: 20px 30px;
+  height: auto;
+  display: flex;
+}
+ 
+.item:nth-child(3) {
+  border-top:  1px solid #E1E8EE;
+  border-bottom:  1px solid #E1E8EE;
+}
+.buttons {
+  position: relative;
+  padding-top: 30px;
+  margin-right: 60px;
+}
+.delete-btn,
+.like-btn {
+  display: inline-block;
+  Cursor: pointer;
+}
+.delete-btn {
+  width: 18px;
+  height: 17px;
+  background: url(&quot;delete-icn.svg&quot;) no-repeat center;
+}
+ 
+.like-btn {
+  position: absolute;
+  top: 9px;
+  left: 15px;
+  width: 60px;
+  height: 60px;
+  background-size: 2900%;
+  background-repeat: no-repeat;
+}
+.is-active {
+  animation-name: animate;
+  animation-duration: .8s;
+  animation-iteration-count: 1;
+  animation-timing-function: steps(28);
+  animation-fill-mode: forwards;
+}
+ 
+@keyframes animate {
+  0%   { background-position: left;  }
+  50%  { background-position: right; }
+  100% { background-position: right; }
+}
+.image {
+  margin-right: 50px;
+}
+ 
+Let’s add some basic style to  product name and description.
+.description {
+  padding-top: 10px;
+  margin-right: 60px;
+  width: 115px;
+}
+ 
+.description span {
+  display: block;
+  font-size: 14px;
+  color: #43484D;
+  font-weight: 400;
+}
+ 
+.description span:first-child {
+  margin-bottom: 5px;
+}
+.description span:last-child {
+  font-weight: 300;
+  margin-top: 8px;
+  color: #86939E;
+}
+.quantity {
+  padding-top: 20px;
+  margin-right: 60px;
+}
+.quantity input {
+  -webkit-appearance: none;
+  border: none;
+  text-align: center;
+  width: 32px;
+  font-size: 16px;
+  color: #43484D;
+  font-weight: 300;
+}
+ 
+button[class*=btn] {
+  width: 30px;
+  height: 30px;
+  background-color: #E1E8EE;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+.minus-btn img {
+  margin-bottom: 3px;
+}
+.plus-btn img {
+  margin-top: 2px;
+}
+ 
+button:focus,
+input:focus {
+  outline:0;
+}
+.total-price {
+  width: 83px;
+  padding-top: 27px;
+  text-align: center;
+  font-size: 16px;
+  color: #43484D;
+  font-weight: 300;
+}
+@media (max-width: 800px) {
+  .shopping-cart {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+  }
+  .item {
+    height: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .image img {
+    width: 50%;
+  }
+  .image,
+  .quantity,
+  .description {
+    width: 100%;
+    text-align: center;
+    margin: 6px 0;
+  }
+  .buttons {
+    margin-right: 20px;
+  }
+}
+</style>
+
+
+
+                <div class="shopping-cart">
+                    <!-- Title -->
+                    <div class="title">
+                        Shopping Bag
+                    </div>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {% set myVal = 0 %}
+                    {% set idx = 0 %}
+                    {% for cart in all_carts %}
+                        {% for cart_item in cart.getFkItem() %}
+                        {% if user.getUserShoppingCart() == cart %}
+                            {% for item in all_items %}
+                                {% if item == cart_item %}
+                                    {% set idx = idx + 1 %}
+                                    {% set myVal = myVal + cart_item.getPrice() %}
+                                        <!-- Product #1 -->
+                                        <div class="item" id="{{ cart_item.getid() }}">
+                                            <div class="buttons">
+                                                <span class="delete-btn"></span>
+                                                <span class="like-btn" id="{{ cart_item.getid() }}" ><i style="color:red" class="fas fa-trash" id="{{ cart_item.getid() }}"></i></span>
+                                            </div>
+                                            <div class="image">
+                                                <img src="{{asset('/images/')}}{{cart_item.getImage()}}" alt="{{cart_item.getImage()}}" class="img-thumbnail" height="150px" width="150px" />
+                                            </div>
+                                            <div class="description">
+                                                <span>{{cart_item.getName()}}</span>
+                                                <span>{{cart_item.getWeight()}} kg</span>
+                                            </div>
+                                            <div class="quantity">
+                                                <button class="plus-btn" type="button" name="button">
+                                                <i style="color:green" class="fas fa-plus"></i>
+                                            </button>
+                                            <input type="text" name="name" value="1" class="number">
+                                            <button class="minus-btn" type="button" name="button">
+                                                <i style="color:red" class="fas fa-minus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="total-price">{% set val = cart_item.getPrice()  %} {{val}} €
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    {% if myVal > 0 %}
+                    {% endif %}
+                      <div id="paypal-button-container"></div>
+                    <button type="button" class="btn btn-success pay" style="width:100%">Checkout</button>
+                    {% endif %}
+                    </div>
+{# ... #}
+<script>
+    $(document).ready(function() {
+          paypal.Buttons({
+    createOrder: function(data, actions) {
+      // This function sets up the details of the transaction, including the amount and line item details.
+        return actions.order.create({
+            purchase_units: [{
+                amount: {
+                    value: '{{ myVal }}',
+                    currency_code: 'EUR',
+                    breakdown: {
+                        item_total: {value: '{{ myVal }}', currency_code: 'EUR'}
+                    }
+                },
+                items: [
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {% for cart in all_carts %}
+                        {% for cart_item in cart.getFkItem() %}
+                        {% if user.getUserShoppingCart() == cart %}
+                            {% for item in all_items %}
+                                {% if item == cart_item %}
+                                    {
+                                        name: {{ cart_item.getName() }},
+                                        unit_amount: {value: {{ cart_item.getPrice() }}, currency_code: 'EUR'},
+                                        quantity: '1',
+                                        sku: 'haf001'
+                                    },
+                                {% endif %}
+                           {% endfor %}
+                        {% endif %}
+                       {% endfor %}
+                    {% endfor %}
+                    {% endif %}
+                    ],
+            }]
+        });
+    },
+    onApprove: function(data, actions) {
+      // This function captures the funds from the transaction.
+      return actions.order.capture().then(function(details) {
+        // This function shows a transaction success message to your buyer.
+        //alert('Transaction completed by ' + details.payer.name.given_name);
+                $.ajax({
+            type: 'POST',
+            url: "{{ path('validate_checkout') }}",
+            data: {"status" : "GOOD"},
+            contentType: false,   // indique à jQuery de ne pas configurer le contentType
+            processData: false,  // indique à jQuery de ne pas traiter les données
+            cache:false,
+            dataType:"json", // Change this according to your response from the server.
+            success : function(result) {
+                //alert(JSON.stringify(result)); // result is an object which is created from the returned JSON
+                //console.log("gg");
+                location.reload(true);
+            },
+            error: function (e) {
+                alert('Error ' + JSON.stringify(e));
+            }
+        });
+
+      });
+    }
+  }).render('#paypal-button-container');
+
+        $('.like-btn').on('click', function() {
+            var formData = new FormData();
+            formData.append("id", this.id);
+             $.ajax({
+                type: 'POST',
+                url: "{{ path('remove_item_to_cart_ajax') }}",
+                data: formData,
+                contentType: false,   // indique à jQuery de ne pas configurer le contentType
+                processData: false,  // indique à jQuery de ne pas traiter les données
+                cache:false,
+                dataType:"json", // Change this according to your response from the server.
+                success : function(result) {
+                    //alert(JSON.stringify(result)); // result is an object which is created from the returned JSON
+                    //console.log("gg");
+                    location.reload();
+                },
+                error: function (e) {
+                    alert('Error ' + JSON.stringify(e));
+                }
+            });
+        });
+        $('.pazy').on('click', function() {
+            var arr = [];
+            var myidx = 0;
+            $('.item').each(function(i, obj) {
+                arr[i] = this.id;
+                myidx++;
+            });
+            if (myidx > 0) {
+                var json_arr = JSON.stringify(arr);
+                var formData = new FormData();
+                formData.append("id", json_arr);
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ path('validate_checkout') }}",
+                    data: formData,
+                    contentType: false,   // indique à jQuery de ne pas configurer le contentType
+                    processData: false,  // indique à jQuery de ne pas traiter les données
+                    cache:false,
+                    dataType:"json", // Change this according to your response from the server.
+                    success : function(result) {
+                        //alert(JSON.stringify(result)); // result is an object which is created from the returned JSON
+                        //console.log("gg");
+                    },
+                    error: function (e) {
+                        alert('Error ' + JSON.stringify(e));
+                    }
+                });
+            }
+        });
+        $('.like-btn').on('click', function() {
+            $(this).toggleClass('is-active');
+        });
+        $('.minus-btn').on('click', function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            var $input = $this.closest('div').find('input');
+            var value = parseInt($input.val());
+        
+            if (value > 1) {
+                value = value - 1;
+            } else {
+                value = 0;
+            }
+        $input.val(value);
+        });
+        $('.plus-btn').on('click', function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            var $input = $this.closest('div').find('input');
+            var value = parseInt($input.val());
+        
+            if (value <= 100) {
+                value = value + 1;
+            } else {
+                value =100;
+            }
+        
+            $input.val(value);
+        });
+    });
+</script>
+
+{% endblock %}
